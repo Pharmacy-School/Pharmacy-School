@@ -5,6 +5,7 @@
       "name": "الحموضة ومشاكل المعدة",
       "slug": "acidity-stomach",
       "image": "images/categories/acidity.jpg",
+      "icon": "fas fa-stomach",
       "videos": [
         {
           "title": "علاج الحموضة بطرق طبيعية",
@@ -24,6 +25,7 @@
       "name": "فيتامينات ومعادن",
       "slug": "vitamins-minerals",
       "image": "images/categories/vit.jpg",
+      "icon": "fas fa-capsules",
       "videos": [
         {
           "title": "فيتامين ب12",
@@ -54,17 +56,19 @@
       "articles": [
         {
           "id": 1,
+          "slug": "vitamin-b12-benefits",
           "title": "فيتامين ب12: الوقود الأساسي للدماغ والطاقة",
-          "content": "محتوى المقال هنا...",
+          "content": "يعتبر فيتامين ب12 من أهم الفيتامينات لصحة الجهاز العصبي وتكوين خلايا الدم الحمراء. نقصه قد يؤدي إلى التعب المزمن وضعف الذاكرة.",
           "image": "images/articles/b12.jpg",
-          "read_time": "10"
+          "read_time": "10 دقائق"
         },
         {
           "id": 2,
+          "slug": "vitamin-c-guide",
           "title": "فيتامين سي: مضاد الأكسدة القوي",
-          "content": "محتوى المقال هنا...",
+          "content": "فيتامين سي ضروري لتقوية المناعة وامتصاص الحديد وإنتاج الكولاجين في البشرة.",
           "image": "images/articles/vitc.jpg",
-          "read_time": "8"
+          "read_time": "8 دقائق"
         }
       ]
     },
@@ -73,6 +77,7 @@
       "name": "أدوية وبدائل اقتصادية",
       "slug": "medicines-alternatives",
       "image": "images/categories/alternatives.jpg",
+      "icon": "fas fa-exchange-alt",
       "videos": [
         {
           "title": "أدوية ممتازة لكن غير معروفة جـ1",
@@ -122,6 +127,7 @@
       "name": "العناية بالشعر والبشرة",
       "slug": "hair-skin-care",
       "image": "images/categories/hair_skin.jpg",
+      "icon": "fas fa-spa",
       "videos": [
         {
           "title": "أفضل شامبو للقشرة",
@@ -132,6 +138,16 @@
           "title": "علاج التينيا",
           "youtube_id": "kDBfE3TiEEY",
           "image": "https://img.youtube.com/vi/kDBfE3TiEEY/maxresdefault.jpg"
+        },
+        {
+          "title": "أرخص كريم للحساسية",
+          "youtube_id": "RHYNUKsUZNI",
+          "image": "https://img.youtube.com/vi/RHYNUKsUZNI/maxresdefault.jpg"
+        },
+        {
+          "title": "أرخص كريم فى الصيدلية",
+          "youtube_id": "tnpo-MDRrEo",
+          "image": "https://img.youtube.com/vi/tnpo-MDRrEo/maxresdefault.jpg"
         }
       ],
       "articles": []
@@ -141,6 +157,7 @@
       "name": "شرح الأدوية واستخداماتها",
       "slug": "drug-uses-interactions",
       "image": "images/categories/drugs_info.jpg",
+      "icon": "fas fa-info-circle",
       "videos": [
         {
           "title": "الأوتروفين - otrivin",
@@ -175,6 +192,7 @@
       "name": "صحة عامة وإسعافات",
       "slug": "general-health-first-aid",
       "image": "images/categories/health.jpg",
+      "icon": "fas fa-heartbeat",
       "videos": [
         {
           "title": "هتعمل إيه لو إيدك اتحرقت",
@@ -203,12 +221,13 @@
         }
       ],
       "articles": [
-         {
+        {
           "id": 15,
+          "slug": "omega-3-benefits",
           "title": "أوميغا 3: درع القلب والدماغ",
-          "content": "محتوى المقال...",
+          "content": "تعتبر أحماض أوميغا 3 الدهنية من العناصر الأساسية التي لا يستطيع الجسم إنتاجها بمفرده، وهي تلعب دوراً حيوياً في صحة القلب وتقليل الالتهابات.",
           "image": "images/articles/omega3.jpg",
-          "read_time": "10"
+          "read_time": "10 دقائق"
         }
       ]
     },
@@ -217,7 +236,14 @@
       "name": "التخسيس والنحافة",
       "slug": "weight-management",
       "image": "images/categories/weight.jpg",
-      "videos": [],
+      "icon": "fas fa-weight",
+      "videos": [
+        {
+          "title": "أرخص دواء لزيادة النشاط",
+          "youtube_id": "yY3_viecQ_s",
+          "image": "https://img.youtube.com/vi/yY3_viecQ_s/maxresdefault.jpg"
+        }
+      ],
       "articles": []
     },
     {
@@ -225,6 +251,7 @@
       "name": "صحة الطفل",
       "slug": "child-health",
       "image": "images/categories/kids.jpg",
+      "icon": "fas fa-baby",
       "videos": [],
       "articles": []
     }
