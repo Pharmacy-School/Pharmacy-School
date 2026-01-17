@@ -1,259 +1,164 @@
 {
-  "categories": [
-    {
-      "id": 1,
-      "name": "الحموضة ومشاكل المعدة",
-      "slug": "acidity-stomach",
-      "image": "images/categories/acidity.jpg",
-      "icon": "fas fa-stomach",
-      "videos": [
+    "categories": [
         {
-          "title": "علاج الحموضة بطرق طبيعية",
-          "youtube_id": "QpJuP38zPvs",
-          "image": "https://img.youtube.com/vi/QpJuP38zPvs/maxresdefault.jpg"
+            "id": 1,
+            "name": "عن الاوميجا3 (Omega 3)",
+            "slug": "عن-الاوميجا3-(omega-3)",
+            "image": "images/categories/default.jpg",
+            "icon": "fa-regular fa-omega",
+            "videos": [
+                {
+                    "title": "فوائد وأنواع وجرعات Omega 3",
+                    "youtube_id": "qd3FSP_ENGU",
+                    "image": "https://img.youtube.com/vi/qd3FSP_ENGU/maxresdefault.jpg"
+                },
+                {
+                    "title": "فوائد أوميجا 3",
+                    "youtube_id": "hQu15XewrJg",
+                    "image": "https://img.youtube.com/vi/hQu15XewrJg/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
         },
         {
-          "title": "مضاد للحموضة",
-          "youtube_id": "VNbjanfEVZQ",
-          "image": "https://img.youtube.com/vi/VNbjanfEVZQ/maxresdefault.jpg"
+            "id": 2,
+            "name": "فيتامينات للشعر",
+            "slug": "فيتامينات-للشعر",
+            "image": "",
+            "icon": "<fa-duotone fa-solid fa-user-hair-long",
+            "videos": [
+                {
+                    "title": "أفضل فيتامينات الشعر Part1",
+                    "youtube_id": "3ilFue6rZ68",
+                    "image": "https://img.youtube.com/vi/3ilFue6rZ68/maxresdefault.jpg"
+                },
+                {
+                    "title": "أفضل فيتامينات الشعر Part 2",
+                    "youtube_id": "0jOwwfHj70k",
+                    "image": "https://img.youtube.com/vi/0jOwwfHj70k/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 3,
+            "name": "فرق أنواع الأدوية",
+            "slug": "فرق-أنواع-الأدوية",
+            "image": "",
+            "icon": "fa-solid fa-file-plus-minus",
+            "videos": [
+                {
+                    "title": "الفرق بين الكريم والمرهم والجل",
+                    "youtube_id": "9dwpQv_y9TM",
+                    "image": "https://img.youtube.com/vi/9dwpQv_y9TM/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 4,
+            "name": "أخطاء شائعة",
+            "slug": "أخطاء-شائعة",
+            "image": "",
+            "icon": "fa-solid fa-triangle-exclamation",
+            "videos": [
+                {
+                    "title": "لاستخدامات الخاطئة للأسبرين 💊",
+                    "youtube_id": "rjJAcsgiXCs",
+                    "image": "https://img.youtube.com/vi/rjJAcsgiXCs/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 5,
+            "name": "إستخدامات الادوية ",
+            "slug": "إستخدامات-الادوية",
+            "image": "",
+            "icon": "fa-solid fa-business-time",
+            "videos": [
+                {
+                    "title": "استخدامات مزيلات الاحتقان",
+                    "youtube_id": "FJ2Ev87jfR4",
+                    "image": "https://img.youtube.com/vi/FJ2Ev87jfR4/maxresdefault.jpg"
+                },
+                {
+                    "title": "مضادات الإلتهاب",
+                    "youtube_id": "lp6hjhBVUsE",
+                    "image": "https://img.youtube.com/vi/lp6hjhBVUsE/maxresdefault.jpg"
+                },
+                {
+                    "title": "إستخدامات الأصناف المختلفة",
+                    "youtube_id": "DJ3kWEDqXyY",
+                    "image": "https://img.youtube.com/vi/DJ3kWEDqXyY/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 6,
+            "name": "معلومات طبيه",
+            "slug": "معلومات-طبيه",
+            "image": "",
+            "icon": "fa-solid fa-circle-info",
+            "videos": [
+                {
+                    "title": "معلومات طبية Part 1",
+                    "youtube_id": "2mB0HWZ-0Cw",
+                    "image": "https://img.youtube.com/vi/2mB0HWZ-0Cw/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 7,
+            "name": "فيتامينات الجسم",
+            "slug": "فيتامينات-الجسم",
+            "image": "",
+            "icon": "fa-solid fa-capsule",
+            "videos": [
+                {
+                    "title": "أعراض نقص الحديد في الجسم",
+                    "youtube_id": "w6eH2jvAt4o",
+                    "image": "https://img.youtube.com/vi/w6eH2jvAt4o/maxresdefault.jpg"
+                },
+                {
+                    "title": "أعراض نقص الزنك(Zn)",
+                    "youtube_id": "9JGrO1y03nM",
+                    "image": "https://img.youtube.com/vi/9JGrO1y03nM/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 8,
+            "name": "أدوية مهدورحقها",
+            "slug": "أدوية-مهدورحقها",
+            "image": "",
+            "icon": "fa-solid fa-trash-can-check",
+            "videos": [
+                {
+                    "title": "أدوية مهدور حقها part 1 ",
+                    "youtube_id": "jrQK2S5QIW0",
+                    "image": "https://img.youtube.com/vi/jrQK2S5QIW0/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 9,
+            "name": "ترشيحات الأفضل ",
+            "slug": "ترشيحات-الأفضل",
+            "image": "",
+            "icon": "fa-etch fa-solid fa-check",
+            "videos": [
+                {
+                    "title": "أفضل صابونه طبية",
+                    "youtube_id": "sRB5B4pXUok",
+                    "image": "https://img.youtube.com/vi/sRB5B4pXUok/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
         }
-      ],
-      "articles": []
-    },
-    {
-      "id": 2,
-      "name": "فيتامينات ومعادن",
-      "slug": "vitamins-minerals",
-      "image": "images/categories/vit.jpg",
-      "icon": "fas fa-capsules",
-      "videos": [
-        {
-          "title": "فيتامين ب12",
-          "youtube_id": "2mB0HWZ-0Cw",
-          "image": "https://img.youtube.com/vi/2mB0HWZ-0Cw/maxresdefault.jpg"
-        },
-        {
-          "title": "أعراض نقص الحديد في الجسم",
-          "youtube_id": "w6eH2jvAt4o",
-          "image": "https://img.youtube.com/vi/w6eH2jvAt4o/maxresdefault.jpg"
-        },
-        {
-          "title": "كيفية استخدام الحديد",
-          "youtube_id": "7kK9VlnLtoI",
-          "image": "https://img.youtube.com/vi/7kK9VlnLtoI/maxresdefault.jpg"
-        },
-        {
-          "title": "قنبلة فيتامينات",
-          "youtube_id": "gZlU9K0WahM",
-          "image": "https://img.youtube.com/vi/gZlU9K0WahM/maxresdefault.jpg"
-        },
-        {
-          "title": "الزنك: معدن المناعة والشعر",
-          "youtube_id": "K07p9Kd697Y",
-          "image": "https://img.youtube.com/vi/K07p9Kd697Y/maxresdefault.jpg"
-        }
-      ],
-      "articles": [
-        {
-          "id": 1,
-          "slug": "vitamin-b12-benefits",
-          "title": "فيتامين ب12: الوقود الأساسي للدماغ والطاقة",
-          "content": "يعتبر فيتامين ب12 من أهم الفيتامينات لصحة الجهاز العصبي وتكوين خلايا الدم الحمراء. نقصه قد يؤدي إلى التعب المزمن وضعف الذاكرة.",
-          "image": "images/articles/b12.jpg",
-          "read_time": "10 دقائق"
-        },
-        {
-          "id": 2,
-          "slug": "vitamin-c-guide",
-          "title": "فيتامين سي: مضاد الأكسدة القوي",
-          "content": "فيتامين سي ضروري لتقوية المناعة وامتصاص الحديد وإنتاج الكولاجين في البشرة.",
-          "image": "images/articles/vitc.jpg",
-          "read_time": "8 دقائق"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "name": "أدوية وبدائل اقتصادية",
-      "slug": "medicines-alternatives",
-      "image": "images/categories/alternatives.jpg",
-      "icon": "fas fa-exchange-alt",
-      "videos": [
-        {
-          "title": "أدوية ممتازة لكن غير معروفة جـ1",
-          "youtube_id": "jrQK2S5QIW0",
-          "image": "https://img.youtube.com/vi/jrQK2S5QIW0/maxresdefault.jpg"
-        },
-        {
-          "title": "بدائل الأدوية جـ1",
-          "youtube_id": "kj6FOBkumak",
-          "image": "https://img.youtube.com/vi/kj6FOBkumak/maxresdefault.jpg"
-        },
-        {
-          "title": "بدائل الأدوية جـ2",
-          "youtube_id": "OPvTgbYmoG4",
-          "image": "https://img.youtube.com/vi/OPvTgbYmoG4/maxresdefault.jpg"
-        },
-        {
-          "title": "بدائل الأدوية جـ3",
-          "youtube_id": "w2ygoyJhQLY",
-          "image": "https://img.youtube.com/vi/w2ygoyJhQLY/maxresdefault.jpg"
-        },
-        {
-          "title": "بدائل الأدوية جـ4",
-          "youtube_id": "Wm9wPTrN7Ms",
-          "image": "https://img.youtube.com/vi/Wm9wPTrN7Ms/maxresdefault.jpg"
-        },
-        {
-          "title": "بديل الميبو - بدائل الأدوية جـ5",
-          "youtube_id": "ER5DR42n5Cs",
-          "image": "https://img.youtube.com/vi/ER5DR42n5Cs/maxresdefault.jpg"
-        },
-        {
-          "title": "رخيص لكن مفيد جـ1",
-          "youtube_id": "Edgmx4oilQM",
-          "image": "https://img.youtube.com/vi/Edgmx4oilQM/maxresdefault.jpg"
-        },
-        {
-          "title": "كنوز الصيدلية جـ1",
-          "youtube_id": "1I41iAYpdgw",
-          "image": "https://img.youtube.com/vi/1I41iAYpdgw/maxresdefault.jpg"
-        }
-      ],
-      "articles": []
-    },
-    {
-      "id": 4,
-      "name": "العناية بالشعر والبشرة",
-      "slug": "hair-skin-care",
-      "image": "images/categories/hair_skin.jpg",
-      "icon": "fas fa-spa",
-      "videos": [
-        {
-          "title": "أفضل شامبو للقشرة",
-          "youtube_id": "J11-O4ZpSNE",
-          "image": "https://img.youtube.com/vi/J11-O4ZpSNE/maxresdefault.jpg"
-        },
-        {
-          "title": "علاج التينيا",
-          "youtube_id": "kDBfE3TiEEY",
-          "image": "https://img.youtube.com/vi/kDBfE3TiEEY/maxresdefault.jpg"
-        },
-        {
-          "title": "أرخص كريم للحساسية",
-          "youtube_id": "RHYNUKsUZNI",
-          "image": "https://img.youtube.com/vi/RHYNUKsUZNI/maxresdefault.jpg"
-        },
-        {
-          "title": "أرخص كريم فى الصيدلية",
-          "youtube_id": "tnpo-MDRrEo",
-          "image": "https://img.youtube.com/vi/tnpo-MDRrEo/maxresdefault.jpg"
-        }
-      ],
-      "articles": []
-    },
-    {
-      "id": 5,
-      "name": "شرح الأدوية واستخداماتها",
-      "slug": "drug-uses-interactions",
-      "image": "images/categories/drugs_info.jpg",
-      "icon": "fas fa-info-circle",
-      "videos": [
-        {
-          "title": "الأوتروفين - otrivin",
-          "youtube_id": "qRVozLs6hAM",
-          "image": "https://img.youtube.com/vi/qRVozLs6hAM/maxresdefault.jpg"
-        },
-        {
-          "title": "أستيل سيستايين - acetyl cistein",
-          "youtube_id": "DJ3kWEDqXyY",
-          "image": "https://img.youtube.com/vi/DJ3kWEDqXyY/maxresdefault.jpg"
-        },
-        {
-          "title": "تداخلات الأدوية جـ1",
-          "youtube_id": "gGIfNQxENAg",
-          "image": "https://img.youtube.com/vi/gGIfNQxENAg/maxresdefault.jpg"
-        },
-        {
-          "title": "تداخلات الأدوية جـ2",
-          "youtube_id": "f1u0E9m6syM",
-          "image": "https://img.youtube.com/vi/f1u0E9m6syM/maxresdefault.jpg"
-        },
-        {
-          "title": "معلومات صيدلانية في السريع جـ1",
-          "youtube_id": "91n1xLonQyI",
-          "image": "https://img.youtube.com/vi/91n1xLonQyI/maxresdefault.jpg"
-        }
-      ],
-      "articles": []
-    },
-    {
-      "id": 6,
-      "name": "صحة عامة وإسعافات",
-      "slug": "general-health-first-aid",
-      "image": "images/categories/health.jpg",
-      "icon": "fas fa-heartbeat",
-      "videos": [
-        {
-          "title": "هتعمل إيه لو إيدك اتحرقت",
-          "youtube_id": "P068gtPYn2A",
-          "image": "https://img.youtube.com/vi/P068gtPYn2A/maxresdefault.jpg"
-        },
-        {
-          "title": "أعراض جدري القرود",
-          "youtube_id": "16hPLTxgpOE",
-          "image": "https://img.youtube.com/vi/16hPLTxgpOE/maxresdefault.jpg"
-        },
-        {
-          "title": "حالات OTC",
-          "youtube_id": "cRj9ReAlyBw",
-          "image": "https://img.youtube.com/vi/cRj9ReAlyBw/maxresdefault.jpg"
-        },
-        {
-          "title": "فوائد أوميغا 3",
-          "youtube_id": "hQu15XewrJg",
-          "image": "https://img.youtube.com/vi/hQu15XewrJg/maxresdefault.jpg"
-        },
-        {
-          "title": "طريقة اختيار أوميغا 3",
-          "youtube_id": "OmM8M3u9pPw",
-          "image": "https://img.youtube.com/vi/OmM8M3u9pPw/maxresdefault.jpg"
-        }
-      ],
-      "articles": [
-        {
-          "id": 15,
-          "slug": "omega-3-benefits",
-          "title": "أوميغا 3: درع القلب والدماغ",
-          "content": "تعتبر أحماض أوميغا 3 الدهنية من العناصر الأساسية التي لا يستطيع الجسم إنتاجها بمفرده، وهي تلعب دوراً حيوياً في صحة القلب وتقليل الالتهابات.",
-          "image": "images/articles/omega3.jpg",
-          "read_time": "10 دقائق"
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "name": "التخسيس والنحافة",
-      "slug": "weight-management",
-      "image": "images/categories/weight.jpg",
-      "icon": "fas fa-weight",
-      "videos": [
-        {
-          "title": "أرخص دواء لزيادة النشاط",
-          "youtube_id": "yY3_viecQ_s",
-          "image": "https://img.youtube.com/vi/yY3_viecQ_s/maxresdefault.jpg"
-        }
-      ],
-      "articles": []
-    },
-    {
-      "id": 8,
-      "name": "صحة الطفل",
-      "slug": "child-health",
-      "image": "images/categories/kids.jpg",
-      "icon": "fas fa-baby",
-      "videos": [],
-      "articles": []
-    }
-  ]
+    ]
 }
