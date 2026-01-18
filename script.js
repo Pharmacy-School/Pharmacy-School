@@ -1,4 +1,4 @@
-// script.js - Improved Version
+// script.js - النسخة المحدثة مع ميزة البحث وإدارة المقالات
 document.addEventListener('DOMContentLoaded', function () {
     const categoryGrid = document.getElementById('categories-list');
     const latestArticlesEl = document.getElementById('latest-articles-list');
@@ -6,146 +6,146 @@ document.addEventListener('DOMContentLoaded', function () {
     const backToTopBtn = document.getElementById('backToTop');
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const navMenu = document.getElementById('navMenu');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchResultsSection = document.getElementById('search-results');
+    const searchResultsList = document.getElementById('search-results-list');
+    const closeSearchBtn = document.getElementById('closeSearch');
+    const articlesMenuLink = document.getElementById('articlesMenuLink');
+
+    let globalData = null;
 
     // Mobile Menu Toggle
     if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            icon.classList.toggle('fa-bars');
-            icon.classList.toggle('fa-times');
         });
     }
 
-    // Back to Top Button Logic
+    // Back to Top
     if (backToTopBtn) {
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 400) {
-                backToTopBtn.style.display = 'flex';
-            } else {
-                backToTopBtn.style.display = 'none';
-            }
+        window.addEventListener('scroll', () => {
+            backToTopBtn.style.display = window.scrollY > 400 ? 'flex' : 'none';
         });
-
-        backToTopBtn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
 
-    // Data Loading
-    let globalData = null;
-
+    // Load Data
     fetch('data.json')
-        .then(response => {
-            if (!response.ok) throw new Error('فشل في تحميل البيانات');
-            return response.json();
-        })
+        .then(res => res.json())
         .then(data => {
             globalData = data;
             initApp(data);
         })
-        .catch(error => {
-            console.error('Error:', error);
-            if (latestArticlesEl) latestArticlesEl.innerHTML = '<p class="text-center">حدث خطأ أثناء تحميل البيانات. يرجى المحاولة لاحقاً.</p>';
-        });
+        .catch(err => console.error('Error loading data:', err));
 
     function initApp(data) {
         renderCategories(data.categories);
         renderLatestContent(data.categories);
+        setupSearch();
         
-        // Routing
         window.addEventListener('hashchange', () => handleRoute(data));
         handleRoute(data);
     }
 
     function renderCategories(categories) {
         if (!categoryGrid) return;
-        categoryGrid.innerHTML = '';
-        
-        categories.forEach(cat => {
-            const card = document.createElement('a');
-            card.href = `#category/${cat.slug}`;
-            card.className = 'category-card';
-
-            const iconClass = cat.icon || 'fas fa-pills';
-            const articlesCount = cat.articles ? cat.articles.length : 0;
-            const videosCount = cat.videos ? cat.videos.length : 0;
-
-            card.innerHTML = `
-                <i class="${iconClass}"></i>
+        categoryGrid.innerHTML = categories.map(cat => `
+            <a href="#category/${cat.slug}" class="category-card">
+                <i class="${cat.icon || 'fas fa-pills'}"></i>
                 <h3>${cat.name}</h3>
-                <span>${articlesCount} مقال • ${videosCount} فيديو</span>
-            `;
-
-            categoryGrid.appendChild(card);
-        });
+                <span>${cat.articles.length} مقال • ${cat.videos.length} فيديو</span>
+            </a>
+        `).join('');
     }
 
     function renderLatestContent(categories) {
         if (!latestArticlesEl) return;
-        latestArticlesEl.innerHTML = '';
-
         const allItems = [];
         categories.forEach(cat => {
-            // Add articles
-            if (cat.articles) {
-                cat.articles.forEach(art => {
-                    allItems.push({ ...art, type: 'article', categorySlug: cat.slug });
-                });
-            }
-            // Add videos
-            if (cat.videos) {
-                cat.videos.forEach(vid => {
-                    allItems.push({ ...vid, type: 'video', categorySlug: cat.slug });
-                });
-            }
+            cat.articles.forEach(a => allItems.push({...a, type: 'article', catName: cat.name}));
+            cat.videos.forEach(v => allItems.push({...v, type: 'video', catName: cat.name}));
         });
-
-        // Get latest 6 items (assuming they are added in order)
         const latest = allItems.slice(-6).reverse();
+        latestArticlesEl.innerHTML = latest.map(item => createCard(item)).join('');
+    }
 
-        latest.forEach(item => {
-            const card = document.createElement('a');
-            const slug = item.slug || (item.youtube_id ? `video-${item.youtube_id}` : 'item');
-            card.href = item.type === 'article' ? `#article/${slug}` : `#video/${item.youtube_id}`;
-            card.className = 'article-card';
-            
-            const badgeText = item.type === 'article' ? 'مقال' : 'فيديو';
-            const imageSrc = item.image || (item.youtube_id ? `https://img.youtube.com/vi/${item.youtube_id}/maxresdefault.jpg` : 'https://via.placeholder.com/400x250');
-
-            card.innerHTML = `
+    function createCard(item) {
+        const isArticle = item.type === 'article';
+        const slug = isArticle ? item.slug : item.youtube_id;
+        const href = isArticle ? `#article/${slug}` : `#video/${slug}`;
+        const image = item.image || `https://img.youtube.com/vi/${item.youtube_id}/maxresdefault.jpg`;
+        
+        return `
+            <a href="${href}" class="article-card">
                 <div class="article-image-wrapper">
-                    <img src="${imageSrc}" alt="${item.title}" class="article-image" loading="lazy">
-                    <span class="badge">${badgeText}</span>
+                    <img src="${image}" alt="${item.title}" class="article-image">
+                    <span class="badge">${isArticle ? 'مقال' : 'فيديو'}</span>
                 </div>
                 <div class="article-content">
+                    <small>${item.catName || ''}</small>
                     <h3>${item.title}</h3>
                     <div class="article-meta">
-                        <span><i class="far fa-clock"></i> ${item.read_time || item.duration || '5 دقائق'}</span>
-                        <span>اقرأ المزيد <i class="fas fa-chevron-left"></i></span>
+                        <span><i class="far fa-clock"></i> ${item.read_time || '5 دقائق'}</span>
                     </div>
                 </div>
-            `;
+            </a>
+        `;
+    }
 
-            latestArticlesEl.appendChild(card);
+    function setupSearch() {
+        const doSearch = () => {
+            const query = searchInput.value.toLowerCase().trim();
+            if (!query) return;
+
+            const results = [];
+            globalData.categories.forEach(cat => {
+                cat.articles.forEach(a => {
+                    if (a.title.toLowerCase().includes(query) || a.content.toLowerCase().includes(query))
+                        results.push({...a, type: 'article', catName: cat.name});
+                });
+                cat.videos.forEach(v => {
+                    if (v.title.toLowerCase().includes(query))
+                        results.push({...v, type: 'video', catName: cat.name});
+                });
+            });
+
+            mainContent.classList.add('d-none');
+            searchResultsSection.classList.remove('d-none');
+            searchResultsList.innerHTML = results.length ? results.map(item => createCard(item)).join('') : '<p class="text-center w-100">لا توجد نتائج.</p>';
+            window.scrollTo(0, 0);
+        };
+
+        searchBtn.addEventListener('click', doSearch);
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSearch(); });
+        closeSearchBtn.addEventListener('click', () => {
+            searchResultsSection.classList.add('d-none');
+            mainContent.classList.remove('d-none');
+        });
+    }
+
+    if (articlesMenuLink) {
+        articlesMenuLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.hash = '#all-articles';
         });
     }
 
     function handleRoute(data) {
         const hash = window.location.hash;
-        
-        // Close mobile menu on navigation
         if (navMenu) navMenu.classList.remove('active');
-        
+        searchResultsSection.classList.add('d-none');
+        mainContent.classList.remove('d-none');
+
         if (hash.startsWith('#category/')) {
             const slug = decodeURIComponent(hash.replace('#category/', ''));
-            const category = data.categories.find(c => c.slug === slug);
-            if (category) showCategory(category);
+            const cat = data.categories.find(c => c.slug === slug);
+            if (cat) showCategory(cat);
         } else if (hash.startsWith('#article/')) {
             const slug = decodeURIComponent(hash.replace('#article/', ''));
             let article = null;
             data.categories.forEach(cat => {
-                const found = cat.articles?.find(a => a.slug === slug);
+                const found = cat.articles.find(a => a.slug === slug);
                 if (found) article = found;
             });
             if (article) showArticle(article);
@@ -153,68 +153,47 @@ document.addEventListener('DOMContentLoaded', function () {
             const id = hash.replace('#video/', '');
             let video = null;
             data.categories.forEach(cat => {
-                const found = cat.videos?.find(v => v.youtube_id === id);
+                const found = cat.videos.find(v => v.youtube_id === id);
                 if (found) video = found;
             });
             if (video) showVideo(video);
+        } else if (hash === '#all-articles') {
+            showAllArticles(data);
         } else {
             showHome();
         }
     }
 
     function showHome() {
-        mainContent.style.display = 'block';
-        const dynamicPage = document.getElementById('dynamic-page');
-        if (dynamicPage) dynamicPage.remove();
+        mainContent.innerHTML = `
+            <section id="home" class="hero">
+                <div class="container text-center">
+                    <div class="hero-content">
+                        <h1>مكتبة الفيديوهات الصيدلانية</h1>
+                        <p>وجهتك الموثوقة لتعلم الصيدلة بأسلوب مبسط وشيق</p>
+                        <div class="hero-btns">
+                            <a href="#categories" class="btn-primary">استكشف التصنيفات</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-padding"><div class="container"><h2 class="section-title">أحدث المحتوى</h2><div id="latest-articles-list" class="article-grid"></div></div></section>
+            <section id="categories" class="section-padding bg-light"><div class="container"><h2 class="section-title">التصنيفات</h2><div id="categories-list" class="category-grid"></div></div></section>
+        `;
+        renderCategories(globalData.categories);
+        renderLatestContent(globalData.categories);
         window.scrollTo(0, 0);
     }
 
-    function showCategory(category) {
-        mainContent.style.display = 'none';
-        let dynamicPage = document.getElementById('dynamic-page');
-        if (dynamicPage) dynamicPage.remove();
-
-        dynamicPage = document.createElement('div');
-        dynamicPage.id = 'dynamic-page';
-        document.body.insertBefore(dynamicPage, document.querySelector('.footer'));
-
-        let itemsHtml = '';
-        
-        // Combine articles and videos for this category
-        const items = [];
-        if (category.articles) category.articles.forEach(a => items.push({...a, type: 'article'}));
-        if (category.videos) category.videos.forEach(v => items.push({...v, type: 'video'}));
-
-        items.forEach(item => {
-            const slug = item.slug || (item.youtube_id ? `video-${item.youtube_id}` : '');
-            const href = item.type === 'article' ? `#article/${slug}` : `#video/${item.youtube_id}`;
-            const imageSrc = item.image || (item.youtube_id ? `https://img.youtube.com/vi/${item.youtube_id}/maxresdefault.jpg` : '');
-            
-            itemsHtml += `
-                <a href="${href}" class="article-card">
-                    <div class="article-image-wrapper">
-                        <img src="${imageSrc}" alt="${item.title}" class="article-image">
-                        <span class="badge">${item.type === 'article' ? 'مقال' : 'فيديو'}</span>
-                    </div>
-                    <div class="article-content">
-                        <h3>${item.title}</h3>
-                        <div class="article-meta">
-                            <span><i class="far fa-clock"></i> ${item.read_time || item.duration || '5 دقائق'}</span>
-                        </div>
-                    </div>
-                </a>
-            `;
-        });
-
-        dynamicPage.innerHTML = `
+    function showCategory(cat) {
+        mainContent.innerHTML = `
             <section class="section-padding">
                 <div class="container">
-                    <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
-                    <div class="section-header">
-                        <h2 class="section-title">${category.name}</h2>
-                    </div>
+                    <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+                    <h2 class="section-title">${cat.name}</h2>
                     <div class="article-grid">
-                        ${itemsHtml || '<p class="text-center">لا يوجد محتوى في هذا التصنيف حالياً.</p>'}
+                        ${cat.articles.map(a => createCard({...a, type: 'article', catName: cat.name})).join('')}
+                        ${cat.videos.map(v => createCard({...v, type: 'video', catName: cat.name})).join('')}
                     </div>
                 </div>
             </section>
@@ -223,55 +202,45 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showArticle(article) {
-        mainContent.style.display = 'none';
-        let dynamicPage = document.getElementById('dynamic-page');
-        if (dynamicPage) dynamicPage.remove();
-
-        dynamicPage = document.createElement('div');
-        dynamicPage.id = 'dynamic-page';
-        document.body.insertBefore(dynamicPage, document.querySelector('.footer'));
-
-        dynamicPage.innerHTML = `
-            <article class="article-page">
-                <div class="container">
-                    <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-right"></i> العودة</a>
-                    <header class="article-header">
-                        <h1>${article.title}</h1>
-                    </header>
-                    <img src="${article.image}" alt="${article.title}" class="article-full-image">
-                    <div class="article-body">
-                        ${article.content}
-                    </div>
-                </div>
-            </article>
+        mainContent.innerHTML = `
+            <div class="container my-5">
+                <a href="javascript:history.back()" class="back-btn mb-4"><i class="fas fa-arrow-right"></i> العودة</a>
+                <article class="article-page">
+                    <h1>${article.title}</h1>
+                    <img src="${article.image}" class="img-fluid rounded mb-4">
+                    <div class="article-body" style="white-space: pre-wrap;">${article.content}</div>
+                </article>
+            </div>
         `;
         window.scrollTo(0, 0);
     }
 
     function showVideo(video) {
-        mainContent.style.display = 'none';
-        let dynamicPage = document.getElementById('dynamic-page');
-        if (dynamicPage) dynamicPage.remove();
-
-        dynamicPage = document.createElement('div');
-        dynamicPage.id = 'dynamic-page';
-        document.body.insertBefore(dynamicPage, document.querySelector('.footer'));
-
-        dynamicPage.innerHTML = `
-            <article class="article-page">
-                <div class="container">
-                    <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-right"></i> العودة</a>
-                    <header class="article-header">
-                        <h1>${video.title}</h1>
-                    </header>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/${video.youtube_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="article-body text-center">
-                        <p>شاهد الفيديو التعليمي الكامل حول ${video.title} من خلال مشغل يوتيوب أعلاه.</p>
-                    </div>
+        mainContent.innerHTML = `
+            <div class="container my-5">
+                <a href="javascript:history.back()" class="back-btn mb-4"><i class="fas fa-arrow-right"></i> العودة</a>
+                <h1 class="mb-4">${video.title}</h1>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/${video.youtube_id}?autoplay=1" frameborder="0" allowfullscreen></iframe>
                 </div>
-            </article>
+            </div>
+        `;
+        window.scrollTo(0, 0);
+    }
+
+    function showAllArticles(data) {
+        const allArticles = [];
+        data.categories.forEach(cat => {
+            cat.articles.forEach(a => allArticles.push({...a, type: 'article', catName: cat.name}));
+        });
+        mainContent.innerHTML = `
+            <section class="section-padding">
+                <div class="container">
+                    <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+                    <h2 class="section-title">جميع المقالات</h2>
+                    <div class="article-grid">${allArticles.map(a => createCard(a)).join('')}</div>
+                </div>
+            </section>
         `;
         window.scrollTo(0, 0);
     }
