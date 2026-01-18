@@ -27,6 +27,11 @@
                 </a>
             </div>
             
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="ابحث عن دواء أو مقال..." />
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -35,6 +40,7 @@
                 <ul>
                     <li><a href="index.html#home">الرئيسية</a></li>
                     <li><a href="index.html#categories">التصنيفات</a></li>
+                    <li><a href="#" id="articlesMenuLink">المقالات</a></li>
                     <li><a href="privacy.html">سياسة الخصوصية</a></li>
                 </ul>
             </nav>
@@ -48,6 +54,17 @@
     </header>
 
     <main id="main-content">
+        <!-- نتائج البحث -->
+        <section id="search-results" class="section-padding d-none">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">نتائج البحث</h2>
+                    <button id="closeSearch" class="btn-close-search">إغلاق البحث</button>
+                </div>
+                <div id="search-results-list" class="article-grid"></div>
+            </div>
+        </section>
+
         <!-- القسم الرئيسي -->
         <section id="home" class="hero">
             <div class="container text-center">
@@ -70,7 +87,6 @@
                     <p>اكتشف آخر ما تم إضافته في مكتبتنا التعليمية</p>
                 </div>
                 <div id="latest-articles-list" class="article-grid">
-                    <!-- سيتم ملؤها بالجافا سكريبت -->
                     <div class="loading-spinner">جاري التحميل...</div>
                 </div>
             </div>
@@ -83,9 +99,7 @@
                     <h2 class="section-title">التصنيفات</h2>
                     <p>تصفح المحتوى حسب الموضوع الذي يهمك</p>
                 </div>
-                <div id="categories-list" class="category-grid">
-                    <!-- سيتم ملؤها بالجافا سكريبت -->
-                </div>
+                <div id="categories-list" class="category-grid"></div>
             </div>
         </section>
     </main>
@@ -121,12 +135,10 @@
         </div>
     </footer>
 
-    <!-- زر العودة للأعلى -->
     <button id="backToTop" class="back-to-top" title="العودة للأعلى">
         <i class="fas fa-chevron-up"></i>
     </button>
 
-    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 </html>
