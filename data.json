@@ -4,7 +4,7 @@
             "id": 1,
             "name": "عن الاوميجا3 (Omega 3)",
             "slug": "عن-الاوميجا3-(omega-3)",
-            "image": "images/categories/default.jpg",
+            "image": "",
             "icon": "fa-regular fa-omega",
             "videos": [
                 {
@@ -91,6 +91,16 @@
                     "title": "إستخدامات الأصناف المختلفة",
                     "youtube_id": "DJ3kWEDqXyY",
                     "image": "https://img.youtube.com/vi/DJ3kWEDqXyY/maxresdefault.jpg"
+                },
+                {
+                    "title": "إستخدامات الأوترفين",
+                    "youtube_id": "qRVozLs6hAM",
+                    "image": "https://img.youtube.com/vi/qRVozLs6hAM/maxresdefault.jpg"
+                },
+                {
+                    "title": "إستخدامات الحديد ",
+                    "youtube_id": "7kK9VlnLtoI",
+                    "image": "https://img.youtube.com/vi/7kK9VlnLtoI/maxresdefault.jpg"
                 }
             ],
             "articles": []
@@ -126,6 +136,11 @@
                     "title": "أعراض نقص الزنك(Zn)",
                     "youtube_id": "9JGrO1y03nM",
                     "image": "https://img.youtube.com/vi/9JGrO1y03nM/maxresdefault.jpg"
+                },
+                {
+                    "title": "إستخدامات الحديد",
+                    "youtube_id": "7kK9VlnLtoI",
+                    "image": "https://img.youtube.com/vi/7kK9VlnLtoI/maxresdefault.jpg"
                 }
             ],
             "articles": []
@@ -156,6 +171,71 @@
                     "title": "أفضل صابونه طبية",
                     "youtube_id": "sRB5B4pXUok",
                     "image": "https://img.youtube.com/vi/sRB5B4pXUok/maxresdefault.jpg"
+                },
+                {
+                    "title": "أفضل شامبوا للقشرة",
+                    "youtube_id": "J11-O4ZpSNE",
+                    "image": "https://img.youtube.com/vi/J11-O4ZpSNE/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 10,
+            "name": "الأدويه وبدائلها",
+            "slug": "الأدويه-وبدائلها",
+            "image": "",
+            "icon": "fa-duotone fa-solid fa-arrow-left-arrow-right",
+            "videos": [
+                {
+                    "title": "بدائل نواقص الصيدليه Part 1",
+                    "youtube_id": "kj6FOBkumak",
+                    "image": "https://img.youtube.com/vi/kj6FOBkumak/maxresdefault.jpg"
+                },
+                {
+                    "title": "بدائل نواقص الصيدليه Part 2",
+                    "youtube_id": "OPvTgbYmoG4",
+                    "image": "https://img.youtube.com/vi/OPvTgbYmoG4/maxresdefault.jpg"
+                },
+                {
+                    "title": "بدائل نواقص الصيدليه Part 3 ",
+                    "youtube_id": "w2ygoyJhQLY",
+                    "image": "https://img.youtube.com/vi/w2ygoyJhQLY/maxresdefault.jpg"
+                },
+                {
+                    "title": "بدائل نواقص الصيدليه Part 3",
+                    "youtube_id": "Wm9wPTrN7Ms",
+                    "image": "https://img.youtube.com/vi/Wm9wPTrN7Ms/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 11,
+            "name": "إسعافات أوليه ",
+            "slug": "إسعافات-أوليه",
+            "image": "",
+            "icon": "fa-sharp fa-regular fa-suitcase-medical",
+            "videos": [
+                {
+                    "title": "هتعمل ايه لو إيدك اتحرقت ",
+                    "youtube_id": "P068gtPYn2A",
+                    "image": "https://img.youtube.com/vi/P068gtPYn2A/maxresdefault.jpg"
+                }
+            ],
+            "articles": []
+        },
+        {
+            "id": 12,
+            "name": "رخيص لكن مفيد ",
+            "slug": "رخيص-لكن-مفيد",
+            "image": "",
+            "icon": "fa-sharp-duotone fa-regular fa-badge-dollar",
+            "videos": [
+                {
+                    "title": "رخيص لكن مفيد Part 1 ",
+                    "youtube_id": "zgoI_-FrzLA",
+                    "image": "https://img.youtube.com/vi/zgoI_-FrzLA/maxresdefault.jpg"
                 }
             ],
             "articles": []
