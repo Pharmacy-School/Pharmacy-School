@@ -1,7 +1,5 @@
-// script.js - النسخة المحدثة مع ميزة البحث وإدارة المقالات
+// script.js - النسخة المصلحة والمحدثة
 document.addEventListener('DOMContentLoaded', function () {
-    const categoryGrid = document.getElementById('categories-list');
-    const latestArticlesEl = document.getElementById('latest-articles-list');
     const mainContent = document.getElementById('main-content');
     const backToTopBtn = document.getElementById('backToTop');
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -32,54 +30,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load Data
     fetch('data.json')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        })
         .then(data => {
             globalData = data;
             initApp(data);
         })
-        .catch(err => console.error('Error loading data:', err));
+        .catch(err => {
+            console.error('Error loading data:', err);
+            const latestList = document.getElementById('latest-articles-list');
+            if (latestList) latestList.innerHTML = '<p class="text-center">حدث خطأ أثناء تحميل البيانات. تأكد من وجود ملف data.json بشكل صحيح.</p>';
+        });
 
     function initApp(data) {
-        renderCategories(data.categories);
-        renderLatestContent(data.categories);
         setupSearch();
-        
         window.addEventListener('hashchange', () => handleRoute(data));
         handleRoute(data);
-    }
-
-    function renderCategories(categories) {
-        if (!categoryGrid) return;
-        categoryGrid.innerHTML = categories.map(cat => `
-            <a href="#category/${cat.slug}" class="category-card">
-                <i class="${cat.icon || 'fas fa-pills'}"></i>
-                <h3>${cat.name}</h3>
-                <span>${cat.articles.length} مقال • ${cat.videos.length} فيديو</span>
-            </a>
-        `).join('');
-    }
-
-    function renderLatestContent(categories) {
-        if (!latestArticlesEl) return;
-        const allItems = [];
-        categories.forEach(cat => {
-            cat.articles.forEach(a => allItems.push({...a, type: 'article', catName: cat.name}));
-            cat.videos.forEach(v => allItems.push({...v, type: 'video', catName: cat.name}));
-        });
-        const latest = allItems.slice(-6).reverse();
-        latestArticlesEl.innerHTML = latest.map(item => createCard(item)).join('');
     }
 
     function createCard(item) {
         const isArticle = item.type === 'article';
         const slug = isArticle ? item.slug : item.youtube_id;
         const href = isArticle ? `#article/${slug}` : `#video/${slug}`;
-        const image = item.image || `https://img.youtube.com/vi/${item.youtube_id}/maxresdefault.jpg`;
+        const image = item.image || (item.youtube_id ? `https://img.youtube.com/vi/${item.youtube_id}/maxresdefault.jpg` : 'https://via.placeholder.com/400x250');
         
         return `
             <a href="${href}" class="article-card">
                 <div class="article-image-wrapper">
-                    <img src="${image}" alt="${item.title}" class="article-image">
+                    <img src="${image}" alt="${item.title}" class="article-image" onerror="this.src='https://via.placeholder.com/400x250'">
                     <span class="badge">${isArticle ? 'مقال' : 'فيديو'}</span>
                 </div>
                 <div class="article-content">
@@ -94,20 +74,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function setupSearch() {
+        if (!searchBtn || !searchInput) return;
         const doSearch = () => {
             const query = searchInput.value.toLowerCase().trim();
             if (!query) return;
 
             const results = [];
             globalData.categories.forEach(cat => {
-                cat.articles.forEach(a => {
-                    if (a.title.toLowerCase().includes(query) || a.content.toLowerCase().includes(query))
-                        results.push({...a, type: 'article', catName: cat.name});
-                });
-                cat.videos.forEach(v => {
-                    if (v.title.toLowerCase().includes(query))
-                        results.push({...v, type: 'video', catName: cat.name});
-                });
+                if (cat.articles) {
+                    cat.articles.forEach(a => {
+                        if (a.title.toLowerCase().includes(query) || (a.content && a.content.toLowerCase().includes(query)))
+                            results.push({...a, type: 'article', catName: cat.name});
+                    });
+                }
+                if (cat.videos) {
+                    cat.videos.forEach(v => {
+                        if (v.title.toLowerCase().includes(query))
+                            results.push({...v, type: 'video', catName: cat.name});
+                    });
+                }
             });
 
             mainContent.classList.add('d-none');
@@ -118,10 +103,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         searchBtn.addEventListener('click', doSearch);
         searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSearch(); });
-        closeSearchBtn.addEventListener('click', () => {
-            searchResultsSection.classList.add('d-none');
-            mainContent.classList.remove('d-none');
-        });
+        if (closeSearchBtn) {
+            closeSearchBtn.addEventListener('click', () => {
+                searchResultsSection.classList.add('d-none');
+                mainContent.classList.remove('d-none');
+                window.location.hash = '';
+            });
+        }
     }
 
     if (articlesMenuLink) {
@@ -134,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function handleRoute(data) {
         const hash = window.location.hash;
         if (navMenu) navMenu.classList.remove('active');
-        searchResultsSection.classList.add('d-none');
+        if (searchResultsSection) searchResultsSection.classList.add('d-none');
         mainContent.classList.remove('d-none');
 
         if (hash.startsWith('#category/')) {
@@ -145,16 +133,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const slug = decodeURIComponent(hash.replace('#article/', ''));
             let article = null;
             data.categories.forEach(cat => {
-                const found = cat.articles.find(a => a.slug === slug);
-                if (found) article = found;
+                if (cat.articles) {
+                    const found = cat.articles.find(a => a.slug === slug);
+                    if (found) article = found;
+                }
             });
             if (article) showArticle(article);
         } else if (hash.startsWith('#video/')) {
             const id = hash.replace('#video/', '');
             let video = null;
             data.categories.forEach(cat => {
-                const found = cat.videos.find(v => v.youtube_id === id);
-                if (found) video = found;
+                if (cat.videos) {
+                    const found = cat.videos.find(v => v.youtube_id === id);
+                    if (found) video = found;
+                }
             });
             if (video) showVideo(video);
         } else if (hash === '#all-articles') {
@@ -180,8 +172,29 @@ document.addEventListener('DOMContentLoaded', function () {
             <section class="section-padding"><div class="container"><h2 class="section-title">أحدث المحتوى</h2><div id="latest-articles-list" class="article-grid"></div></div></section>
             <section id="categories" class="section-padding bg-light"><div class="container"><h2 class="section-title">التصنيفات</h2><div id="categories-list" class="category-grid"></div></div></section>
         `;
-        renderCategories(globalData.categories);
-        renderLatestContent(globalData.categories);
+        
+        const categoryGrid = document.getElementById('categories-list');
+        const latestArticlesEl = document.getElementById('latest-articles-list');
+
+        if (categoryGrid) {
+            categoryGrid.innerHTML = globalData.categories.map(cat => `
+                <a href="#category/${cat.slug}" class="category-card">
+                    <i class="${cat.icon || 'fas fa-pills'}"></i>
+                    <h3>${cat.name}</h3>
+                    <span>${(cat.articles || []).length} مقال • ${(cat.videos || []).length} فيديو</span>
+                </a>
+            `).join('');
+        }
+
+        if (latestArticlesEl) {
+            const allItems = [];
+            globalData.categories.forEach(cat => {
+                if (cat.articles) cat.articles.forEach(a => allItems.push({...a, type: 'article', catName: cat.name}));
+                if (cat.videos) cat.videos.forEach(v => allItems.push({...v, type: 'video', catName: cat.name}));
+            });
+            const latest = allItems.slice(-6).reverse();
+            latestArticlesEl.innerHTML = latest.map(item => createCard(item)).join('');
+        }
         window.scrollTo(0, 0);
     }
 
@@ -192,8 +205,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
                     <h2 class="section-title">${cat.name}</h2>
                     <div class="article-grid">
-                        ${cat.articles.map(a => createCard({...a, type: 'article', catName: cat.name})).join('')}
-                        ${cat.videos.map(v => createCard({...v, type: 'video', catName: cat.name})).join('')}
+                        ${(cat.articles || []).map(a => createCard({...a, type: 'article', catName: cat.name})).join('')}
+                        ${(cat.videos || []).map(v => createCard({...v, type: 'video', catName: cat.name})).join('')}
                     </div>
                 </div>
             </section>
@@ -207,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <a href="javascript:history.back()" class="back-btn mb-4"><i class="fas fa-arrow-right"></i> العودة</a>
                 <article class="article-page">
                     <h1>${article.title}</h1>
-                    <img src="${article.image}" class="img-fluid rounded mb-4">
+                    <img src="${article.image}" class="img-fluid rounded mb-4" onerror="this.src='https://via.placeholder.com/800x400'">
                     <div class="article-body" style="white-space: pre-wrap;">${article.content}</div>
                 </article>
             </div>
@@ -231,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showAllArticles(data) {
         const allArticles = [];
         data.categories.forEach(cat => {
-            cat.articles.forEach(a => allArticles.push({...a, type: 'article', catName: cat.name}));
+            if (cat.articles) cat.articles.forEach(a => allArticles.push({...a, type: 'article', catName: cat.name}));
         });
         mainContent.innerHTML = `
             <section class="section-padding">
