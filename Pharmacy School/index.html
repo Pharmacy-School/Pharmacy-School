@@ -1,83 +1,178 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>مكتبة الفيديوهات الصيدلانية | Pharmacy School</title>
-  <meta name="description" content="تعلم بأسلوب مبسط مع أفضل الفيديوهات والمقالات التعليمية في مجال الصيدلة.">
-  <meta name="keywords" content="صيدلة, فيتامينات, أدوية, صحة, فيتامين سي, أوميغا 3">
-  <meta name="author" content="Pharmacy School">
-  <meta name="robots" content="index, follow">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>مكتبة الفيديوهات الصيدلانية | Pharmacy School</title>
+    <meta name="description" content="منصة تعليمية متكاملة لتبسيط العلوم الصيدلانية للجميع عبر فيديوهات ومقالات تعليمية احترافية.">
+    <meta name="keywords" content="صيدلة, فيتامينات, أدوية, صحة, فيتامين سي, أوميغا 3, تعليم صيدلاني, معلومات طبية">
+    <meta name="author" content="Pharmacy School">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pharmacy-school.github.io/Pharmacy-School/">
+    <meta property="og:title" content="مكتبة الفيديوهات الصيدلانية | Pharmacy School">
+    <meta property="og:description" content="منصة تعليمية متكاملة لتبسيط العلوم الصيدلانية للجميع عبر فيديوهات ومقالات تعليمية احترافية.">
+    <meta property="og:image" content="https://pharmacy-school.github.io/Pharmacy-School/Pharmacy%20Logo.jpg"> <!-- تأكد من وجود هذا المسار -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pharmacy-school.github.io/Pharmacy-School/">
+    <meta property="twitter:title" content="مكتبة الفيديوهات الصيدلانية | Pharmacy School">
+    <meta property="twitter:description" content="منصة تعليمية متكاملة لتبسيط العلوم الصيدلانية للجميع عبر فيديوهات ومقالات تعليمية احترافية.">
+    <meta property="twitter:image" content="https://pharmacy-school.github.io/Pharmacy-School/Pharmacy%20Logo.jpg">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
 
-  <!-- الهيدر -->
-  <header class="header">
-    <div class="logo">
-      <img src="images/logo.png" alt="Pharmacy School Logo" />
-      <span>Pharmacy School</span>
+    <!-- الهيدر -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <img src="Pharmacy%20Logo.jpg" alt="Pharmacy School Logo" onerror="this.src=\'https://via.placeholder.com/50?text=PS\'" />
+                    <span>Pharmacy School</span>
+                </a>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="ابحث عن دواء أو مقال..." aria-label="حقل البحث" />
+                <button id="searchBtn" aria-label="زر البحث"><i class="fas fa-search"></i></button>
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="قائمة التنقل للهاتف المحمول">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-menu" id="navMenu" aria-label="قائمة التنقل الرئيسية">
+                <ul>
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#categories">التصنيفات</a></li>
+                    <li><a href="#articles">المقالات</a></li>
+                    <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                </ul>
+            </nav>
+
+            <div class="contact-icons">
+                <a href="https://www.youtube.com/@pharmacy.school" target="_blank" title="قناة اليوتيوب" aria-label="قناة يوتيوب Pharmacy School"><i class="fab fa-youtube"></i></a>
+                <a href="tel:+201220877262" title="اتصل بنا" aria-label="اتصل بنا عبر الهاتف"><i class="fas fa-phone"></i></a>
+                <a href="mailto:ph.khaled.mohamed@gmail.com" title="أرسل بريدًا" aria-label="أرسل بريدًا إلكترونيًا"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- قسم نتائج البحث (يظهر عند البحث) -->
+        <section id="search-results" class="section-padding d-none">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">نتائج البحث</h2>
+                    <button id="closeSearch" class="btn-close-search" aria-label="إغلاق البحث">إغلاق البحث</button>
+                </div>
+                <div id="search-results-list" class="article-grid"></div>
+                <div id="no-search-results" class="info-message d-none">لا توجد نتائج مطابقة لبحثك.</div>
+            </div>
+        </section>
+
+        <!-- القسم الرئيسي (Hero Section) -->
+        <section id="home" class="hero">
+            <div class="container text-center">
+                <div class="hero-content">
+                    <h1>مكتبة الفيديوهات الصيدلانية</h1>
+                    <p>وجهتك الموثوقة لتعلم الصيدلة بأسلوب مبسط وشيق من خلال الفيديوهات والمقالات التعليمية</p>
+                    <div class="hero-btns">
+                        <a href="#categories" class="btn-primary">استكشف التصنيفات</a>
+                        <a href="https://www.youtube.com/@pharmacy.school" target="_blank" class="btn-secondary"><i class="fab fa-youtube"></i> تابعنا على يوتيوب</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- أحدث المقالات والفيديوهات -->
+        <section id="latest-articles" class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">أحدث المقالات والفيديوهات</h2>
+                    <p>اكتشف آخر ما تم إضافته في مكتبتنا التعليمية</p>
+                </div>
+                <div id="latest-articles-list" class="article-grid">
+                    <div class="loading-spinner">جاري التحميل...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- التصنيفات -->
+        <section id="categories" class="section-padding bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">التصنيفات</h2>
+                    <p>تصفح المحتوى حسب الموضوع الذي يهمك</p>
+                </div>
+                <div id="category-grid" class="category-grid"></div>
+            </div>
+        </section>
+
+        <!-- قسم عرض المقال/التصنيف الفردي (يتم ملؤه بواسطة JavaScript) -->
+        <section id="dynamic-content-view" class="section-padding d-none">
+            <div class="container">
+                <button id="backToHomeBtn" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
+                <div id="dynamic-content-area"></div>
+            </div>
+        </section>
+
+    </main> <!-- نهاية main-content -->
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Pharmacy School</h3>
+                    <p>منصة تعليمية تهدف لتبسيط العلوم الصيدلانية للجميع.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#categories">التصنيفات</a></li>
+                        <li><a href="privacy.html">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>تابعنا</h4>
+                    <div class="social-icons">
+                        <a href="https://www.youtube.com/@pharmacy.school" target="_blank" aria-label="يوتيوب"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/your-pharmacy-school-page" target="_blank" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a> <!-- رابط فيسبوك صحيح -->
+                        <a href="https://www.instagram.com/your-pharmacy-school-page" target="_blank" aria-label="انستغرام"><i class="fab fa-instagram"></i></a> <!-- رابط انستغرام صحيح -->
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p>&copy; 2024 Pharmacy School. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="back-to-top" title="العودة للأعلى" aria-label="العودة لأعلى الصفحة">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Video Modal Structure -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="video-player-container">
+                <iframe id="youtubeVideoPlayer" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
-    <nav>
-      <ul>
-        <li><a href="#home">الرئيسية</a></li>
-        <li><a href="#categories">التصنيفات</a></li>
-        <li><a href="privacy.html">سياسة الخصوصية</a></li>
-      </ul>
-    </nav>
-    <div class="contact-icons">
-      <a href="https://www.youtube.com/@pharmacy.school" target="_blank" title="قناة اليوتيوب"><i class="fab fa-youtube"></i></a>
-      <a href="tel:+201220877262" title="اتصل بنا"><i class="fas fa-phone"></i></a>
-      <a href="mailto:ph.khaled.mohamed@gmail.com" title="أرسل بريدًا"><i class="fas fa-envelope"></i></a>
-    </div>
-  </header>
 
-  <!-- القسم الرئيسي -->
-  <section id="home" class="hero">
-    <div class="container text-center">
-      <h1>مكتبة الفيديوهات الصيدلانية</h1>
-      <p>تعلم بأسلوب مبسط مع أفضل الفيديوهات والمقالات التعليمية في مجال الصيدلة</p>
-      <a href="#categories" class="btn-animated">استكشف التصنيفات</a>
-    </div>
-  </section>
-
-  <!-- أحدث المقالات -->
-  <section id="latest-articles" class="py-5">
-    <div class="container">
-      <h2 class="section-title">أحدث المقالات</h2>
-      <div id="latest-articles-list" class="article-grid">
-        <!-- سيتم ملؤها بالجافا سكريبت -->
-      </div>
-    </div>
-  </section>
-
-  <!-- التصنيفات -->
-  <section id="categories" class="py-5">
-    <div class="container">
-      <h2 class="section-title">اختر التصنيف المطلوب</h2>
-      <div id="category-grid" class="category-grid">
-        <!-- سيتم ملؤها بالجافا سكريبت -->
-      </div>
-    </div>
-  </section>
-
-  <!-- عرض محتوى التصنيف أو المقال -->
-  <section id="main-content" class="py-5">
-    <!-- سيتم عرض المحتوى هنا -->
-  </section>
-
-  <!-- زر العودة للأعلى -->
-  <button id="backToTop" class="btn-back-to-top">⬆️</button>
-
-  <!-- الفوتر -->
-  <footer class="text-center py-3">
-    <p>&copy; 2025 Pharmacy School. جميع الحقوق محفوظة.</p>
-    <p><a href="privacy.html">سياسة الخصوصية</a></p>
-  </footer>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
