@@ -1,6 +1,6 @@
 // ==========================================
 // Pharmacy School - script.js
-// تم التعديل والإصلاح بالكامل
+// تم تعديل الصور الافتراضية لتوليد SVG محلياً
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -12,8 +12,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const backToTopBtn = document.getElementById('backToTop');
 
     // ---------- المسار الأساسي للموقع على GitHub Pages ----------
-    // بما أن الموقع في مجلد فرعي، لازم نضيف اسم المجلد
     const BASE_PATH = '/Pharmacy-School';
+
+    // ---------- دالة لتوليد SVG placeholder محلياً ----------
+    function generatePlaceholderSVG(text, width = 80, height = 80, bgColor = '#003399', textColor = '#FFFFFF') {
+        const svgContent = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+                <rect width="100%" height="100%" fill="${bgColor}" />
+                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
+                      font-family="Cairo, sans-serif" font-size="${Math.max(10, Math.round(Math.min(width, height) * 0.15))}px" 
+                      fill="${textColor}">
+                    ${text}
+                </text>
+            </svg>
+        `;
+        return 'data:image/svg+xml,' + encodeURIComponent(svgContent);
+    }
 
     // ---------- زر العودة للأعلى ----------
     if (backToTopBtn) {
@@ -67,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function () {
             card.href = `#category/${encodeURIComponent(cat.slug)}`;
             card.className = 'category-card';
 
-            // صورة افتراضية لو مفيش صورة
+            // --- استخدام الصورة المحلية إن وجدت، وإلا توليد SVG ---
             const imgSrc = cat.image
                 ? BASE_PATH + '/' + cat.image
-                : 'https://via.placeholder.com/80/003399/FFFFFF?text=' + encodeURIComponent(cat.name);
+                : generatePlaceholderSVG(cat.name);
 
             card.innerHTML = `
                 <img src="${imgSrc}" alt="${cat.name}" style="width:80px; height:80px; border-radius:50%; object-fit:cover;" />
@@ -217,7 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ---------- إعادة ربط أحداث التنقل بعد تحميل المحتوى ----------
-    // (اختياري - لتأكيد عمل الروابط الديناميكية)
     window.addEventListener('click', function (e) {
         if (e.target.matches('a[href^="#"]')) {
             e.preventDefault();
