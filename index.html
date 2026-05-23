@@ -53,7 +53,8 @@
         </div>
     </header>
 
-    <main id="main-content">
+    <!-- تم التعديل هنا: استخدام div بدلاً من main وتعيين id="main-content" -->
+    <div id="main-content">
         <!-- نتائج البحث -->
         <section id="search-results" class="section-padding d-none">
             <div class="container">
@@ -86,6 +87,7 @@
                     <h2 class="section-title">أحدث المقالات والفيديوهات</h2>
                     <p>اكتشف آخر ما تم إضافته في مكتبتنا التعليمية</p>
                 </div>
+                <!-- هذا الـ id كان موجوداً بالفعل بشكل صحيح -->
                 <div id="latest-articles-list" class="article-grid">
                     <div class="loading-spinner">جاري التحميل...</div>
                 </div>
@@ -99,10 +101,11 @@
                     <h2 class="section-title">التصنيفات</h2>
                     <p>تصفح المحتوى حسب الموضوع الذي يهمك</p>
                 </div>
-                <div id="categories-list" class="category-grid"></div>
+                <!-- تم التعديل هنا: تغيير id إلى category-grid كما طلبت -->
+                <div id="category-grid" class="category-grid"></div>
             </div>
         </section>
-    </main>
+    </div> <!-- نهاية main-content -->
 
     <!-- الفوتر -->
     <footer class="footer">
@@ -135,8 +138,9 @@
         </div>
     </footer>
 
+    <!-- تم التعديل هنا: إضافة الرمز ⬆️ للزر كما طلبت مع الحفاظ على كلاسات التنسيق -->
     <button id="backToTop" class="back-to-top" title="العودة للأعلى">
-        <i class="fas fa-chevron-up"></i>
+        ⬆️
     </button>
 
     <script src="script.js"></script>
