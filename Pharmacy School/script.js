@@ -1,288 +1,247 @@
-// ==========================================
-// Pharmacy School - script.js (ULTRA FIX VERSION)
-// ==========================================
+// script.js - النسخة المحدثة مع ميزة البحث وإدارة المقالات
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryGrid = document.getElementById('categories-list');
+    const latestArticlesEl = document.getElementById('latest-articles-list');
+    const mainContent = document.getElementById('main-content');
+    const backToTopBtn = document.getElementById('backToTop');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchResultsSection = document.getElementById('search-results');
+    const searchResultsList = document.getElementById('search-results-list');
+    const closeSearchBtn = document.getElementById('closeSearch');
+    const articlesMenuLink = document.getElementById('articlesMenuLink');
 
-document.addEventListener("DOMContentLoaded", function () {
+    let globalData = null;
 
-    // ---------- المراجع للعناصر ----------
-    const categoryGrid = document.getElementById("category-grid");
-    const latestArticlesEl = document.getElementById("latest-articles-list");
-    const mainContent = document.getElementById("main-content");
-    const backToTopBtn = document.getElementById("backToTop");
-    const searchInput = document.getElementById("searchInput");
-    const searchBtn = document.getElementById("searchBtn");
-    const searchResultsSection = document.getElementById("search-results");
-    const searchResultsList = document.getElementById("search-results-list");
-    const noSearchResults = document.getElementById("no-search-results");
-    const closeSearchBtn = document.getElementById("closeSearch");
-    const dynamicContentView = document.getElementById("dynamic-content-view");
-    const dynamicContentArea = document.getElementById("dynamic-content-area");
-    const backToHomeBtn = document.getElementById("backToHomeBtn");
-    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-    const navMenu = document.getElementById("navMenu");
+    // Mobile Menu Toggle
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    }
 
-    // Video Modal Elements
-    const videoModal = document.getElementById("videoModal");
-    const closeButton = document.querySelector(".close-button");
-    const youtubeVideoPlayer = document.getElementById("youtubeVideoPlayer");
+    // Back to Top
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            backToTopBtn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
 
-    let allData = null; 
+    // Load Data
+    fetch('data.json')
+        .then(res => res.json())
+        .then(data => {
+            globalData = data;
+            initApp(data);
+        })
+        .catch(err => console.error('Error loading data:', err));
 
-    // المسار الأساسي (تأكد من مطابقته لاسم المستودع)
-    const BASE_PATH = "/Pharmacy-School"; 
-
-    // ---------- دالة لتنظيف المسارات وإصلاح مشكلة الروابط المزدوجة ----------
-    function getCorrectImagePath(path) {
-        if (!path) return "";
+    function initApp(data) {
+        renderCategories(data.categories);
+        renderLatestContent(data.categories);
+        setupSearch();
         
-        // تنظيف المسار من المسافات الزائدة في البداية والنهاية
-        let cleanPath = path.trim();
-
-        // إذا كان الرابط يبدأ بـ http أو https، فهو رابط خارجي كامل، لا تضف له أي شيء
-        if (cleanPath.startsWith("http://") || cleanPath.startsWith("https://")) {
-            return cleanPath;
-        }
-
-        // إذا كان يبدأ بـ ./ أو /، قم بتنظيفه
-        cleanPath = cleanPath.replace(/^\.\//, "").replace(/^\//, "");
-
-        // العودة بالمسار الكامل للمستودع
-        return `${BASE_PATH}/${cleanPath}`;
+        window.addEventListener('hashchange', () => handleRoute(data));
+        handleRoute(data);
     }
 
-    // ---------- دالة لتوليد SVG placeholder ----------
-    function generatePlaceholderSVG(text) {
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">
-            <rect width="100%" height="100%" fill="#eee"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="14" fill="#999">${text}</text>
-        </svg>`;
-        return "data:image/svg+xml," + encodeURIComponent(svg);
-    }
-
-    // ---------- وظائف الـ Modal للفيديوهات ----------
-    function openVideoModal(youtubeId) {
-        if (!youtubeId) return;
-        youtubeVideoPlayer.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
-        videoModal.style.display = "flex";
-        document.body.style.overflow = "hidden"; // منع التمرير عند فتح الفيديو
-    }
-
-    function closeVideoModal() {
-        youtubeVideoPlayer.src = ""; 
-        videoModal.style.display = "none";
-        document.body.style.overflow = "auto";
-    }
-
-    if (closeButton) closeButton.addEventListener("click", closeVideoModal);
-    window.addEventListener("click", (e) => { if (e.target == videoModal) closeVideoModal(); });
-    
-    // جعل الدالة متاحة عالمياً للـ onclick
-    window.openVideoModal = openVideoModal;
-
-    // ---------- تحميل البيانات ----------
-    async function loadData() {
-        const paths = [`${BASE_PATH}/data.json`, "data.json", "./data.json"];
-        let success = false;
-
-        for (const path of paths) {
-            try {
-                const response = await fetch(path);
-                if (response.ok) {
-                    allData = await response.json();
-                    renderCategories(allData); 
-                    renderLatestArticles(allData); 
-                    handleHashChange(); // معالجة الهاش الحالي عند التحميل
-                    window.addEventListener("hashchange", handleHashChange);
-                    success = true;
-                    break;
-                }
-            } catch (e) { console.error(`Failed to load from ${path}`); }
-        }
-
-        if (!success) {
-            if (categoryGrid) categoryGrid.innerHTML = `<div class="info-message">⚠️ فشل تحميل البيانات. تأكد من وجود ملف data.json.</div>`;
-        }
-    }
-
-    // ---------- عرض التصنيفات ----------
-    function renderCategories(data) {
+    function renderCategories(categories) {
         if (!categoryGrid) return;
-        categoryGrid.innerHTML = ""; 
-        data.categories.forEach(cat => {
-            const card = document.createElement("a");
-            card.href = `#category/${encodeURIComponent(cat.slug)}`;
-            card.className = "category-card";
-            
-            let iconHtml = "";
-            if (cat.icon) {
-                iconHtml = `<i class="${cat.icon} fa-3x"></i>`;
-            } else {
-                const imgSrc = getCorrectImagePath(cat.image || "");
-                iconHtml = `<img src="${imgSrc || generatePlaceholderSVG(cat.name)}" class="category-image-icon" onerror="this.src='${generatePlaceholderSVG(cat.name)}'"/>`;
-            }
-
-            card.innerHTML = `
-                ${iconHtml}
+        categoryGrid.innerHTML = categories.map(cat => `
+            <a href="#category/${cat.slug}" class="category-card">
+                <i class="${cat.icon || 'fas fa-pills'}"></i>
                 <h3>${cat.name}</h3>
-                <p>${cat.articles?.length || 0} مقال • ${cat.videos?.length || 0} فيديو</p>
-            `;
-            categoryGrid.appendChild(card);
-        });
+                <span>${cat.articles.length} مقال • ${cat.videos.length} فيديو</span>
+            </a>
+        `).join('');
     }
 
-    // ---------- عرض أحدث المحتويات ----------
-    function renderLatestArticles(data) {
+    function renderLatestContent(categories) {
         if (!latestArticlesEl) return;
-        const all = [];
-        data.categories.forEach(cat => {
-            if (cat.articles) cat.articles.forEach(a => all.push({...a, type:'article', catName: cat.name}));
-            if (cat.videos) cat.videos.forEach(v => all.push({...v, type:'video', catName: cat.name}));
+        const allItems = [];
+        categories.forEach(cat => {
+            cat.articles.forEach(a => allItems.push({...a, type: 'article', catName: cat.name}));
+            cat.videos.forEach(v => allItems.push({...v, type: 'video', catName: cat.name}));
         });
-        
-        const latest = all.sort((a,b) => (b.id||0)-(a.id||0)).slice(0, 3);
-        latestArticlesEl.innerHTML = "";
-
-        latest.forEach(item => {
-            const card = document.createElement("div");
-            card.className = "article-card";
-            
-            if (item.type === 'article') {
-                const imgSrc = getCorrectImagePath(item.image);
-                card.innerHTML = `
-                    <a href="#article/${item.id}">
-                        <div class="article-image-wrapper">
-                            <img src="${imgSrc}" onerror="this.src='${generatePlaceholderSVG(item.title)}'"/>
-                            <span class="badge">مقال</span>
-                        </div>
-                        <div class="article-content">
-                            <h3>${item.title}</h3>
-                            <div class="article-meta"><span>${item.catName}</span></div>
-                        </div>
-                    </a>`;
-            } else {
-                const thumb = item.image ? getCorrectImagePath(item.image) : `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`;
-                card.innerHTML = `
-                    <div class="video-card-item" onclick="openVideoModal('${item.youtube_id}')" style="cursor:pointer">
-                        <div class="article-image-wrapper">
-                            <img src="${thumb}" onerror="this.src='https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg'"/>
-                            <span class="badge" style="background:red">فيديو</span>
-                        </div>
-                        <div class="article-content">
-                            <h3>${item.title}</h3>
-                            <div class="article-meta"><span>مشاهدة الفيديو</span></div>
-                        </div>
-                    </div>`;
-            }
-            latestArticlesEl.appendChild(card);
-        });
+        const latest = allItems.slice(-6).reverse();
+        latestArticlesEl.innerHTML = latest.map(item => createCard(item)).join('');
     }
 
-    // ---------- معالجة تغيير الهاش (Hash Navigation) ----------
-    function handleHashChange() {
-        const hash = window.location.hash.substring(1);
-        const homeSection = document.getElementById("home");
-        const latestSection = document.getElementById("latest-articles");
-        const catsSection = document.getElementById("categories");
-
-        if (!hash || hash === "home") {
-            homeSection.classList.remove("d-none");
-            latestSection.classList.remove("d-none");
-            catsSection.classList.remove("d-none");
-            dynamicContentView.classList.add("d-none");
-            searchResultsSection.classList.add("d-none");
-            window.scrollTo(0, 0);
-            return;
-        }
-
-        homeSection.classList.add("d-none");
-        latestSection.classList.add("d-none");
-        catsSection.classList.add("d-none");
-        dynamicContentView.classList.remove("d-none");
+    function createCard(item) {
+        const isArticle = item.type === 'article';
+        const slug = isArticle ? item.slug : item.youtube_id;
+        const href = isArticle ? `#article/${slug}` : `#video/${slug}`;
+        const image = item.image || `https://img.youtube.com/vi/${item.youtube_id}/maxresdefault.jpg`;
         
-        renderDynamicContent(hash);
+        return `
+            <a href="${href}" class="article-card">
+                <div class="article-image-wrapper">
+                    <img src="${image}" alt="${item.title}" class="article-image">
+                    <span class="badge">${isArticle ? 'مقال' : 'فيديو'}</span>
+                </div>
+                <div class="article-content">
+                    <small>${item.catName || ''}</small>
+                    <h3>${item.title}</h3>
+                    <div class="article-meta">
+                        <span><i class="far fa-clock"></i> ${item.read_time || '5 دقائق'}</span>
+                    </div>
+                </div>
+            </a>
+        `;
     }
 
-    // ---------- عرض المحتوى الديناميكي ----------
-    function renderDynamicContent(hash) {
-        dynamicContentArea.innerHTML = "";
+    function setupSearch() {
+        const doSearch = () => {
+            const query = searchInput.value.toLowerCase().trim();
+            if (!query) return;
 
-        if (hash.startsWith("category/")) {
-            const slug = decodeURIComponent(hash.split("/")[1]);
-            const cat = allData.categories.find(c => c.slug === slug);
-            if (!cat) return;
-
-            let html = `<div class="category-header"><h2>${cat.name}</h2></div>`;
-            
-            if (cat.videos?.length > 0) {
-                html += `<h3><i class="fas fa-video"></i> فيديوهات</h3><div class="video-grid">`;
-                cat.videos.forEach(v => {
-                    const thumb = v.image ? getCorrectImagePath(v.image) : `https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`;
-                    html += `
-                        <div class="video-card" onclick="openVideoModal('${v.youtube_id}')">
-                            <img src="${thumb}" onerror="this.src='https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg'"/>
-                            <span class="video-title">${v.title}</span>
-                        </div>`;
-                });
-                html += `</div>`;
-            }
-
-            if (cat.articles?.length > 0) {
-                html += `<h3><i class="fas fa-file-alt"></i> مقالات</h3><div class="article-list-simple">`;
+            const results = [];
+            globalData.categories.forEach(cat => {
                 cat.articles.forEach(a => {
-                    html += `<div class="article-item-simple"><a href="#article/${a.id}">${a.title}</a><span>${a.read_time || 5} دقائق</span></div>`;
+                    if (a.title.toLowerCase().includes(query) || a.content.toLowerCase().includes(query))
+                        results.push({...a, type: 'article', catName: cat.name});
                 });
-                html += `</div>`;
-            }
-            dynamicContentArea.innerHTML = html;
-
-        } else if (hash.startsWith("article/")) {
-            const id = parseInt(hash.split("/")[1]);
-            let article = null;
-            allData.categories.forEach(c => {
-                const found = c.articles?.find(a => a.id === id);
-                if (found) article = found;
+                cat.videos.forEach(v => {
+                    if (v.title.toLowerCase().includes(query))
+                        results.push({...v, type: 'video', catName: cat.name});
+                });
             });
 
-            if (article) {
-                const imgSrc = getCorrectImagePath(article.image);
-                dynamicContentArea.innerHTML = `
-                    <div class="article-full">
-                        <h2>${article.title}</h2>
-                        ${imgSrc ? `<img src="${imgSrc}" class="article-full-img" onerror="this.style.display='none'"/>` : ""}
-                        <div class="article-body-content">${article.content}</div>
-                    </div>`;
-            }
+            mainContent.classList.add('d-none');
+            searchResultsSection.classList.remove('d-none');
+            searchResultsList.innerHTML = results.length ? results.map(item => createCard(item)).join('') : '<p class="text-center w-100">لا توجد نتائج.</p>';
+            window.scrollTo(0, 0);
+        };
+
+        searchBtn.addEventListener('click', doSearch);
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSearch(); });
+        closeSearchBtn.addEventListener('click', () => {
+            searchResultsSection.classList.add('d-none');
+            mainContent.classList.remove('d-none');
+        });
+    }
+
+    if (articlesMenuLink) {
+        articlesMenuLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.hash = '#all-articles';
+        });
+    }
+
+    function handleRoute(data) {
+        const hash = window.location.hash;
+        if (navMenu) navMenu.classList.remove('active');
+        searchResultsSection.classList.add('d-none');
+        mainContent.classList.remove('d-none');
+
+        if (hash.startsWith('#category/')) {
+            const slug = decodeURIComponent(hash.replace('#category/', ''));
+            const cat = data.categories.find(c => c.slug === slug);
+            if (cat) showCategory(cat);
+        } else if (hash.startsWith('#article/')) {
+            const slug = decodeURIComponent(hash.replace('#article/', ''));
+            let article = null;
+            data.categories.forEach(cat => {
+                const found = cat.articles.find(a => a.slug === slug);
+                if (found) article = found;
+            });
+            if (article) showArticle(article);
+        } else if (hash.startsWith('#video/')) {
+            const id = hash.replace('#video/', '');
+            let video = null;
+            data.categories.forEach(cat => {
+                const found = cat.videos.find(v => v.youtube_id === id);
+                if (found) video = found;
+            });
+            if (video) showVideo(video);
+        } else if (hash === '#all-articles') {
+            showAllArticles(data);
+        } else {
+            showHome();
         }
+    }
+
+    function showHome() {
+        mainContent.innerHTML = `
+            <section id="home" class="hero">
+                <div class="container text-center">
+                    <div class="hero-content">
+                        <h1>مكتبة الفيديوهات الصيدلانية</h1>
+                        <p>وجهتك الموثوقة لتعلم الصيدلة بأسلوب مبسط وشيق</p>
+                        <div class="hero-btns">
+                            <a href="#categories" class="btn-primary">استكشف التصنيفات</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section-padding"><div class="container"><h2 class="section-title">أحدث المحتوى</h2><div id="latest-articles-list" class="article-grid"></div></div></section>
+            <section id="categories" class="section-padding bg-light"><div class="container"><h2 class="section-title">التصنيفات</h2><div id="categories-list" class="category-grid"></div></div></section>
+        `;
+        renderCategories(globalData.categories);
+        renderLatestContent(globalData.categories);
         window.scrollTo(0, 0);
     }
 
-    // ---------- العودة للرئيسية ----------
-    if (backToHomeBtn) {
-        backToHomeBtn.addEventListener("click", () => {
-            window.location.hash = "";
-        });
+    function showCategory(cat) {
+        mainContent.innerHTML = `
+            <section class="section-padding">
+                <div class="container">
+                    <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+                    <h2 class="section-title">${cat.name}</h2>
+                    <div class="article-grid">
+                        ${cat.articles.map(a => createCard({...a, type: 'article', catName: cat.name})).join('')}
+                        ${cat.videos.map(v => createCard({...v, type: 'video', catName: cat.name})).join('')}
+                    </div>
+                </div>
+            </section>
+        `;
+        window.scrollTo(0, 0);
     }
 
-    // ---------- تشغيل البحث ----------
-    if (searchBtn && searchInput) {
-        searchBtn.addEventListener("click", () => {
-            const q = searchInput.value.trim().toLowerCase();
-            if (!q) return;
-            
-            searchResultsList.innerHTML = "";
-            const results = [];
-            allData.categories.forEach(c => {
-                c.articles?.forEach(a => { if(a.title.toLowerCase().includes(q)) results.push({...a, type:'article'}) });
-                c.videos?.forEach(v => { if(v.title.toLowerCase().includes(q)) results.push({...v, type:'video'}) });
-            });
-
-            if (results.length > 0) {
-                searchResultsSection.classList.remove("d-none");
-                homeSection.classList.add("d-none");
-                // ... (إضافة نتائج البحث هنا)
-            }
-        });
+    function showArticle(article) {
+        mainContent.innerHTML = `
+            <div class="container my-5">
+                <a href="javascript:history.back()" class="back-btn mb-4"><i class="fas fa-arrow-right"></i> العودة</a>
+                <article class="article-page">
+                    <h1>${article.title}</h1>
+                    <img src="${article.image}" class="img-fluid rounded mb-4">
+                    <div class="article-body" style="white-space: pre-wrap;">${article.content}</div>
+                </article>
+            </div>
+        `;
+        window.scrollTo(0, 0);
     }
 
-    loadData();
+    function showVideo(video) {
+        mainContent.innerHTML = `
+            <div class="container my-5">
+                <a href="javascript:history.back()" class="back-btn mb-4"><i class="fas fa-arrow-right"></i> العودة</a>
+                <h1 class="mb-4">${video.title}</h1>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/${video.youtube_id}?autoplay=1" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        `;
+        window.scrollTo(0, 0);
+    }
+
+    function showAllArticles(data) {
+        const allArticles = [];
+        data.categories.forEach(cat => {
+            cat.articles.forEach(a => allArticles.push({...a, type: 'article', catName: cat.name}));
+        });
+        mainContent.innerHTML = `
+            <section class="section-padding">
+                <div class="container">
+                    <a href="#" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+                    <h2 class="section-title">جميع المقالات</h2>
+                    <div class="article-grid">${allArticles.map(a => createCard(a)).join('')}</div>
+                </div>
+            </section>
+        `;
+        window.scrollTo(0, 0);
+    }
 });
